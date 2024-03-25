@@ -14,4 +14,13 @@ export class SalonService {
             throw error;
         }
     };
+
+    public findAll = async() => {
+        try {
+            const salons = await prisma.salon.findMany();
+            return salons;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

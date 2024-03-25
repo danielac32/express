@@ -20,5 +20,16 @@ export class SalonController {
             console.log(error);
             res.status(500)
         }
+    };
+
+    public findAll = async(req: Request, res: Response) => {
+        try {
+            const salons = await this.salonService.findAll();
+            res.status(200).json({
+                salons
+            });
+        } catch (error) {
+            res.status(500);
+        }
     }
 };

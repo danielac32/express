@@ -41,4 +41,15 @@ export class ReservationController {
             res.status(500).json({ error: 'Talk to administrator' });
         }
     };
+
+    public findAll = async(req: Request, res: Response) => {
+        try {
+            const reservations = await this.reservationServices.getReservations();
+            res.status(200).json({
+                reservations
+            });
+        } catch (error) {
+            res.status(500)
+        }
+    }
 };
