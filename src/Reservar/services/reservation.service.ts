@@ -1,25 +1,23 @@
 import { PrismaClient }  from "@prisma/client";
-import { User } from '../interfaces/reserve.interface';
-//import { generateJwt } from '../../shared/generate-jwt';
+import { Reserve } from "../interfaces/reserve.interface";
+import { prisma } from "../../db/db-connection";
 
 export class ReservationServices {
-    public createReservation = async(ReserveData: Reserve) => {
+    public createReservation = async(reserveData: Reserve) => {
         try {
-            const prisma = new PrismaClient();
-            const newReservation = await prisma.Reservation.create({
+            const newReservation = await prisma.reservation.create({
                 data:{
-                      startDate: ReserveData.startDate,
-                      endDate:ReserveData.endDate,
-                      requerimiento:ReserveData.requerimiento,
-                      cantidad_persona:ReserveData.cantidad_persona,
-                      descripcion:ReserveData.descripcion,
-                      state:ReserveData.state,
-                      userId: { connect: { id: ReserveData.userId } },
-                      salonId: { connect: { id: ReserveData.salonId } }
+                    startDate: reserveData.startDate,
+                    endDate:reserveData.endDate,
+                    requerimiento:reserveData.requerimiento,
+                    cantidad_persona:reserveData.cantidad_persona,
+                    descripcion:reserveData.descripcion,
+                    state:reserveData.state,
+                    userId: reserveData.userId,
+                    salonId: reserveData.salonId
                 }
             });
             return newReservation;
-
         } catch (error) {
             console.log(error);
             throw error
@@ -28,8 +26,7 @@ export class ReservationServices {
 
     public getReservations = async() => {
         try {
-            const prisma = new PrismaClient();
-            const Reservations = await prisma.Reservation.findMany();
+            const Reservations = await prisma.reservation.findMany();
             return Reservations;
         } catch (error) {
             console.log(error);
@@ -39,8 +36,7 @@ export class ReservationServices {
 
     public getReservation = async(userId: number) => {
         try {
-            const prisma = new PrismaClient();
-            const Reservation = await prisma.Reservation.findFirst({
+            const Reservation = await prisma.reservation.findFirst({
               where: {
                 userId: userId,
               },
@@ -52,12 +48,12 @@ export class ReservationServices {
         }
     }
 
-    public UpdateReservation = async(userId: number,newData: Reserve) => {
+    public UpdateReservation = async(reservationId: number,newData: Reserve) => {
         try {
-            const DataReservation = await this.getUser(userId);
+            const DataReservation = await this.getReservation(reservationId);
             if(!DataReservation) return null;
             const prisma = new PrismaClient();
-            const updatedReservation = await prisma.Reservation.update({
+            const updatedReservation = await prisma.reservation.update({
               where: {
                 id: DataReservation.id
               },
@@ -71,13 +67,13 @@ export class ReservationServices {
         }
     }
 
-    public deleteReservation = async(userId: number) => {
+    public deleteReservation = async(reservationId: number) => {
         try {
-            const DataReservation = await this.getUser(userId);
+            const DataReservation = await this.getReservation(reservationId);
             if(!DataReservation) return null;
     
             const prisma = new PrismaClient();
-            const deletedReservation = await prisma.Reservation.delete({
+            const deletedReservation = await prisma.reservation.delete({
               where: {
                 id: DataReservation.id,
               },

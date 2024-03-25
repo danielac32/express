@@ -7,7 +7,7 @@ export class UserController {
         private userServices: UserServices
     ) {}
 
-    public sotreUser = async(req: Request, res: Response) => {
+    public storeUser = async(req: Request, res: Response) => {
         try {
             const body = req.body;
             const data = await this.userServices.createUser(body);    
