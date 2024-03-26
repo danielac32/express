@@ -9,10 +9,10 @@ export interface Reserve {
   salonId: number;
 }
 
-// export type StatusReserve = 'pending' | 'refused' | 'accepted';
-
 export enum StatusReserve {
   PENDING = 'pending',
   REFUSED = 'refused',
   ACCEPTED = 'accepted'
 };
+
+export type StatusReserveTypes = StatusReserve.ACCEPTED | StatusReserve.PENDING | StatusReserve.REFUSED;

@@ -12,5 +12,7 @@ router.get('/:id', reservationController.readById);
 router.patch('/:id', reservationController.update);
 router.delete('/:id', reservationController.delete);
 
+router.patch('/:id/change-status', reservationController.changeStatusInReservation);
+
 
 export default router;

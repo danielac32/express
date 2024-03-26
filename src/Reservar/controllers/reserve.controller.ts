@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { ReservationServices } from '../services/reservation.service';
+import { FilterQueryReservation } from '../interfaces/filter-querys';
+import { StatusReserveTypes } from '../interfaces/reserve.interface';
 
 /*
 {
@@ -56,8 +58,12 @@ export class ReservationController {
     };
 
     public read = async(req: Request, res: Response) => {
+        const { state, endDate, startDate } = req.query;
+        const filter: FilterQueryReservation = {};
+        filter.state = state as StatusReserveTypes;
+
         try {
-            const reservations = await this.reservationServices.getReservations();
+            const reservations = await this.reservationServices.getReservations(filter);
             res.status(200).json({
                 reservations
             });
@@ -78,7 +84,7 @@ export class ReservationController {
         }
     }
     public update = async(req: Request, res: Response) => {
-    try {
+        try {
             const body = req.body;
             const { id } = req.params;
             const data = await this.reservationServices.updateReservation(Number(id),body);
@@ -89,7 +95,7 @@ export class ReservationController {
         }
     };
     public delete = async(req: Request, res: Response) => {
-    try {
+        try {
             const { id } = req.params;
             const data = await this.reservationServices.deleteReservation(Number(id));
             if(!data) return res.status(404).json({ msg: 'Reservation not found' });
@@ -99,5 +105,15 @@ export class ReservationController {
         }
     };
 
+    public changeStatusInReservation = async(req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            const { status } = req.body;
+            const reservation = await this.reservationServices.changeReservationStatus(+id, status);
+            res.status(200).json({ reservation });
+        } catch (error) {
+            res.status(500)
+        }
+    }
 
 };

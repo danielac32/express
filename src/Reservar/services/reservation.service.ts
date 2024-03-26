@@ -1,5 +1,6 @@
-import { Reserve, StatusReserve } from "../interfaces/reserve.interface";
+import { Reserve, StatusReserve, StatusReserveTypes } from "../interfaces/reserve.interface";
 import { prisma } from "../../db/db-connection";
+import { FilterQueryReservation } from "../interfaces/filter-querys";
 
 export class ReservationServices {
     public createReservation = async(reserveData: Reserve) => {
@@ -23,10 +24,12 @@ export class ReservationServices {
         }
     };
 
-    public getReservations = async() => {
+    public getReservations = async(filter?: FilterQueryReservation) => {
         try {
-            const Reservations = await prisma.reservation.findMany();
-            return Reservations;
+            const reservations = await prisma.reservation.findMany({
+                where: filter
+            });
+            return reservations;
         } catch (error) {
             console.log(error);
             throw error
@@ -49,18 +52,14 @@ export class ReservationServices {
     }
 
     public updateReservation = async(reservationId: number,newData: Reserve) => {
-        try {
-            const DataReservation = await this.getReservation(reservationId);
-            if(!DataReservation) return null;
-            //const prisma = new PrismaClient();
+        try {    
             const updatedReservation = await prisma.reservation.update({
               where: {
-                id: DataReservation.id
+                id: reservationId
               },
               data: newData,
             });
             return updatedReservation;
-
         } catch (error) {
             console.log(error);
             throw error;
@@ -69,13 +68,13 @@ export class ReservationServices {
 
     public deleteReservation = async(reservationId: number) => {
         try {
-            const DataReservation = await this.getReservation(reservationId);
-            if(!DataReservation) return null;
+            const dataReservation = await this.getReservation(reservationId);
+            if(!dataReservation) return null;
     
            // const prisma = new PrismaClient();
             const deletedReservation = await prisma.reservation.delete({
               where: {
-                id: DataReservation.id,
+                id: dataReservation.id,
               },
             });
             return deletedReservation;
@@ -106,6 +105,23 @@ export class ReservationServices {
                 }
             })
             return reservations;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public changeReservationStatus = async(id: number, status: StatusReserveTypes) => {
+        console.log({ status })
+        try {
+            const reservation = await prisma.reservation.update({
+                where: {
+                    id
+                },
+                data: {
+                    state: status
+                }
+            });
+            return reservation;
         } catch (error) {
             throw error;
         }
