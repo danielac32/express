@@ -1,6 +1,17 @@
 import { Request, Response } from 'express';
 import { ReservationServices } from '../services/reservation.service';
 
+/*
+{
+  "startDate": "2024-04-01T08:00:00Z",
+  "endDate": "2024-04-15T12:00:00Z",
+  "requerimiento": "Algo",
+  "cantidad_persona": 4,
+  "descripcion": "Descripción de la reserva",
+  "state": "Activa",
+  "userId": 1,
+  "salonId": 1
+}*/
 
 
 export class ReservationController {
@@ -9,8 +20,8 @@ export class ReservationController {
         private reservationServices: ReservationServices
     ) {}
 
-    public createReservation = async(req: Request, res: Response) => {
-        const {
+    public create = async(req: Request, res: Response) => {
+        /*const {
             startDate,
             endDate,
             requerimiento,
@@ -19,30 +30,32 @@ export class ReservationController {
             state,
             userId,
             salonId,
-        } = req.body;
+        } = req.body;*/
         try {
-            const newReservation = await this.reservationServices.createReservation({
-                startDate: new Date(),
-                endDate: new Date(),
+            const body = req.body;
+            const newReservation = await this.reservationServices.createReservation(body);
+            /*const newReservation = await this.reservationServices.createReservation({
+                startDate,//: new Date(),
+                endDate,//: new Date(),
                 requerimiento,
                 cantidad_persona,
                 descripcion,
                 state,
                 userId,
                 salonId,  
-            });
+            });*/
 
             res.status(201).json({
                 message: 'Reservation created',
                 reservation: newReservation
             });
         } catch (error) {
-            console.log('ERROR CREATE RESERVATION -> ', error);
+            console.log('ERROR CREATE RESERVATION -> ', error,req.body);
             res.status(500).json({ error: 'Talk to administrator' });
         }
     };
 
-    public findAll = async(req: Request, res: Response) => {
+    public read = async(req: Request, res: Response) => {
         try {
             const reservations = await this.reservationServices.getReservations();
             res.status(200).json({
@@ -52,4 +65,39 @@ export class ReservationController {
             res.status(500)
         }
     }
+    public readById = async(req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            const reservation = await this.reservationServices.getReservation(Number(id));
+            console.log(reservation)
+            res.status(200).json({
+                reservation
+            });
+        } catch (error) {
+            res.status(500)
+        }
+    }
+    public update = async(req: Request, res: Response) => {
+    try {
+            const body = req.body;
+            const { id } = req.params;
+            const data = await this.reservationServices.UpdateReservation(Number(id),body);
+            if(!data) return res.status(404).json({ msg: 'Reservation not found' });
+            res.status(200).json( data );
+        } catch (error) {
+            res.status(500).json({ msg: 'Internal server error' });
+        }
+    };
+    public delete = async(req: Request, res: Response) => {
+    try {
+            const { id } = req.params;
+            const data = await this.reservationServices.deleteReservation(Number(id));
+            if(!data) return res.status(404).json({ msg: 'Reservation not found' });
+            res.status(200).json( data );
+        } catch (error) {
+            res.status(500).json({ msg: 'Internal server error' });
+        }
+    };
+
+
 };

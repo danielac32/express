@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
-import { SalonService } from "../services/salon.service";
+import { DirectionService } from "../services/direction.service";
 
-export class SalonController {
+export class DirectionController {
     constructor(
-        private salonService: SalonService
+        private directionService: DirectionService
     ) {}
 
     public create = async(req: Request, res: Response) => {
         try {
-            const newSalon = await this.salonService.createSalon({
-                name: req.body.name
+            const newDirection = await this.directionService.createDirection({
+                address: req.body.address
             })
 
             res.status(201).json({
-                message: 'Salon created',
-                salon: newSalon
+                message: 'Direction created',
+                salon: newDirection
             });
         } catch (error) {
             console.log(error);
@@ -24,9 +24,9 @@ export class SalonController {
 
     public read = async(req: Request, res: Response) => {
         try {
-            const salones = await this.salonService.getSalones();
+            const Directions = await this.directionService.getDirections();
             res.status(200).json({
-                salones
+                Directions
             });
         } catch (error) {
             res.status(500)
@@ -35,10 +35,10 @@ export class SalonController {
     public readById = async(req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const salon = await this.salonService.getSalon(Number(id));
-            console.log(salon)
+            const Direction = await this.directionService.getDirection(Number(id));
+            console.log(Direction)
             res.status(200).json({
-                salon
+                Direction
             });
         } catch (error) {
             res.status(500)
@@ -48,8 +48,8 @@ export class SalonController {
     try {
             const body = req.body;
             const { id } = req.params;
-            const data = await this.salonService.UpdateSalon(Number(id),body);
-            if(!data) return res.status(404).json({ msg: 'salon not found' });
+            const data = await this.directionService.UpdateDirection(Number(id),body);
+            if(!data) return res.status(404).json({ msg: 'Direction not found' });
             res.status(200).json( data );
         } catch (error) {
             res.status(500).json({ msg: 'Internal server error' });
@@ -59,8 +59,8 @@ export class SalonController {
     public delete = async(req: Request, res: Response) => {
     try {
             const { id } = req.params;
-            const data = await this.salonService.deleteSalon(Number(id));
-            if(!data) return res.status(404).json({ msg: 'salon not found' });
+            const data = await this.directionService.deleteDirection(Number(id));
+            if(!data) return res.status(404).json({ msg: 'Direction not found' });
             res.status(200).json( data );
         } catch (error) {
             res.status(500).json({ msg: 'Internal server error' });

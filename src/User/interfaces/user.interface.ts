@@ -1,7 +1,7 @@
 export interface User {
     name: string;
     email: string;
-    isActive: boolean;
+    isActive?: boolean;
     password: string;
-    directionId?: number;
+    directionId: number;
 };

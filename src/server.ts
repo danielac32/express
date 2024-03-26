@@ -6,7 +6,7 @@ import cors from 'cors';
 import userRouter from './User/routes/user.routes';
 import salonRouter from './Salon/routes/salon.routes';
 import reservationRouter from './Reservar/routes/reserve.routes';
-
+import directionRouter from './Direction/routes/direction.routes';
 const app = express();
 
 // Middlewares
@@ -18,5 +18,5 @@ app.use(express.json())
 app.use(userRouter)
 app.use('/salon', salonRouter)
 app.use('/reservation', reservationRouter)
-
+app.use('/direction', directionRouter)
 export default app;

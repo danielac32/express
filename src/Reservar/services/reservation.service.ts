@@ -34,11 +34,12 @@ export class ReservationServices {
         }
     }
 
-    public getReservation = async(userId: number) => {
+    public getReservation = async(id: number) => {
         try {
             const Reservation = await prisma.reservation.findFirst({
               where: {
-                userId: userId,
+                //userId: userId,
+                id:id
               },
             })
             return Reservation;
@@ -52,7 +53,7 @@ export class ReservationServices {
         try {
             const DataReservation = await this.getReservation(reservationId);
             if(!DataReservation) return null;
-            const prisma = new PrismaClient();
+            //const prisma = new PrismaClient();
             const updatedReservation = await prisma.reservation.update({
               where: {
                 id: DataReservation.id
@@ -72,7 +73,7 @@ export class ReservationServices {
             const DataReservation = await this.getReservation(reservationId);
             if(!DataReservation) return null;
     
-            const prisma = new PrismaClient();
+           // const prisma = new PrismaClient();
             const deletedReservation = await prisma.reservation.delete({
               where: {
                 id: DataReservation.id,

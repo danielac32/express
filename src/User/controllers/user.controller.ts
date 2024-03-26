@@ -8,9 +8,21 @@ export class UserController {
     ) {}
 
     public storeUser = async(req: Request, res: Response) => {
+        /*const {
+            name,
+            email,
+            password,
+            directionId
+        } = req.body;*/
         try {
             const body = req.body;
-            const data = await this.userServices.createUser(body);    
+            const data = await this.userServices.createUser(body);
+            /*const data = await this.userServices.createUser({
+                name,
+                email,
+                password,
+                directionId
+            });*/    
             res.status(201).json(data);
         } catch (error) {
             console.log(error);
