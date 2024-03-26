@@ -40,18 +40,24 @@ export class UserServices {
     public getUser = async(term: string) => {
         let user;
 
-        user = await prisma.userEntity.findFirst({
-            where: {
-                email: term 
-            }
-        });
-
-        if(!user) {
+        // Verifica si el término es un correo electrónico
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(term)) {
             user = await prisma.userEntity.findFirst({
                 where: {
-                    id: +term
+                        email: term
                 }
             });
+        }
+
+        if (!user) {
+            const userId = parseInt(term);
+            if (!isNaN(userId)) {
+              user = await prisma.userEntity.findUnique({
+                where: {
+                  id: userId
+                }
+              });
+            }
         }
         return user;
     }
@@ -109,11 +115,12 @@ export class UserServices {
         }
     }
 
-    getReservationsByUser = async(email: string) => {
+    public getReservationsByUser = async(term: string) => {
+        console.log({ term })
         try {
-            const user = await this.getUser(email);
+            const user = await this.getUser(term);
             if(!user) return null
-
+            
             const reservations = await this.reservationServices.reservationsByUser(user.id);
             return reservations;
         } catch (error) {

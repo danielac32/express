@@ -8,3 +8,11 @@ export interface Reserve {
   userId: number;
   salonId: number;
 }
+
+// export type StatusReserve = 'pending' | 'refused' | 'accepted';
+
+export enum StatusReserve {
+  PENDING = 'pending',
+  REFUSED = 'refused',
+  ACCEPTED = 'accepted'
+};

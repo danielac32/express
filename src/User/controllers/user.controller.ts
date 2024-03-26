@@ -73,7 +73,7 @@ export class UserController {
 
     public reservationsByUser = async(req: Request, res: Response) => {
         try {
-            const { term } = req.query;
+            const { term } = req.params;
             const reservations = await this.userServices.getReservationsByUser(term as string);
             res.status(200).json({ reservations });
         } catch (error) {

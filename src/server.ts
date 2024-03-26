@@ -19,4 +19,5 @@ app.use(userRouter)
 app.use('/salon', salonRouter)
 app.use('/reservations', reservationRouter)
 app.use('/directions', directionRouter)
+
 export default app;

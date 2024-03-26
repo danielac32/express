@@ -1,5 +1,4 @@
-import { PrismaClient }  from "@prisma/client";
-import { Reserve } from "../interfaces/reserve.interface";
+import { Reserve, StatusReserve } from "../interfaces/reserve.interface";
 import { prisma } from "../../db/db-connection";
 
 export class ReservationServices {
@@ -7,12 +6,12 @@ export class ReservationServices {
         try {
             const newReservation = await prisma.reservation.create({
                 data:{
-                    startDate: reserveData.startDate,
-                    endDate:reserveData.endDate,
+                    startDate: new Date(reserveData.startDate),
+                    endDate: new Date(reserveData.endDate),
                     requerimiento:reserveData.requerimiento,
                     cantidad_persona:reserveData.cantidad_persona,
                     descripcion:reserveData.descripcion,
-                    state:reserveData.state,
+                    state: StatusReserve.PENDING,
                     userId: reserveData.userId,
                     salonId: reserveData.salonId
                 }
