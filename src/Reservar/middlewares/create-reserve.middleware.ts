@@ -12,7 +12,16 @@ export const createReserveMiddleware = (req: Request, res: Response, next: NextF
         salonId,
     } = req.body;
 
-    if(!startDate || !endDate || !requerimiento || !cantidad_persona || !descripcion || !state || !userId || !salonId) return res.status(400).json({
+    if(
+        !startDate ||
+        !endDate ||
+        !requerimiento ||
+        !cantidad_persona ||
+        !descripcion ||
+        !state ||
+        !userId ||
+        !salonId
+    ) return res.status(400).json({
         message: 'startDate, endDate, requerimiento .... are required'
     });
 

@@ -49,7 +49,7 @@ export class ReservationServices {
         }
     }
 
-    public UpdateReservation = async(reservationId: number,newData: Reserve) => {
+    public updateReservation = async(reservationId: number,newData: Reserve) => {
         try {
             const DataReservation = await this.getReservation(reservationId);
             if(!DataReservation) return null;
@@ -82,6 +82,32 @@ export class ReservationServices {
             return deletedReservation;
         } catch (error) {
             console.log(error);
+            throw error;
+        }
+    }
+
+    public reservationsByUser = async(userId: number) => {
+        try {
+            const reservations = await prisma.reservation.findMany({
+                where: {
+                    userId
+                }
+            })
+            return reservations;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public reservationsBySalon = async(salonId: number) => {
+        try {
+            const reservations = await prisma.reservation.findMany({
+                where: {
+                    salonId
+                }
+            })
+            return reservations;
+        } catch (error) {
             throw error;
         }
     }

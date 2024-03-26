@@ -24,9 +24,9 @@ export class DirectionController {
 
     public read = async(req: Request, res: Response) => {
         try {
-            const Directions = await this.directionService.getDirections();
+            const directions = await this.directionService.getDirections();
             res.status(200).json({
-                Directions
+                directions
             });
         } catch (error) {
             res.status(500)
@@ -35,10 +35,9 @@ export class DirectionController {
     public readById = async(req: Request, res: Response) => {
         try {
             const { id } = req.params;
-            const Direction = await this.directionService.getDirection(Number(id));
-            console.log(Direction)
+            const direction = await this.directionService.getDirection(Number(id));
             res.status(200).json({
-                Direction
+                direction
             });
         } catch (error) {
             res.status(500)
@@ -48,7 +47,7 @@ export class DirectionController {
     try {
             const body = req.body;
             const { id } = req.params;
-            const data = await this.directionService.UpdateDirection(Number(id),body);
+            const data = await this.directionService.updateDirection(Number(id),body);
             if(!data) return res.status(404).json({ msg: 'Direction not found' });
             res.status(200).json( data );
         } catch (error) {

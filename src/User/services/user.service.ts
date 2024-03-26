@@ -3,8 +3,13 @@
 import { User } from '../interfaces/user.interface';
 import { generateJwt } from '../../shared/generate-jwt';
 import { prisma } from "../../db/db-connection";
+import { ReservationServices } from '../../Reservar/services/reservation.service';
 
 export class UserServices {
+    constructor(
+        private reservationServices: ReservationServices
+    ) {}
+
     public createUser = async(user: User) => {
         try {
             const newUser = await prisma.userEntity.create({
@@ -32,24 +37,28 @@ export class UserServices {
         }
     }
 
-    public getUser = async(email: string) => {
-        try {
-            const User = await prisma.userEntity.findFirst({
-              where: {
-                email: email,
-              },
-            })
-            return User;
-        } catch (error) {
-            console.log(error);       
-            throw error;
+    public getUser = async(term: string) => {
+        let user;
+
+        user = await prisma.userEntity.findFirst({
+            where: {
+                email: term 
+            }
+        });
+
+        if(!user) {
+            user = await prisma.userEntity.findFirst({
+                where: {
+                    id: +term
+                }
+            });
         }
+        return user;
     }
 
-    public UpdateUser = async(email: string,newData: User) => {
+    public updateUser = async(email: string,newData: User) => {
         try {
             const user = await this.getUser(email);
-            console.log(user);
             if(!user) return null;
             const updatedUser = await prisma.userEntity.update({
               where: {
@@ -85,10 +94,10 @@ export class UserServices {
         try {
             const user = await this.getUser(email);
             if(!user) return null;
-    
+
             if( user.password === password ) {
                 const token = await generateJwt(user.email);
-    
+
                 return {
                     user,
                     token
@@ -99,9 +108,21 @@ export class UserServices {
             throw error;
         }
     }
+
+    getReservationsByUser = async(email: string) => {
+        try {
+            const user = await this.getUser(email);
+            if(!user) return null
+
+            const reservations = await this.reservationServices.reservationsByUser(user.id);
+            return reservations;
+        } catch (error) {
+            throw error;
+        }
+    }
 };
 
-        
+
 /*const newUser = await prisma.userEntity.create({
     data:{
             name: "daniel",

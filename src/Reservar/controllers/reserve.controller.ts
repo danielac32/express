@@ -81,7 +81,7 @@ export class ReservationController {
     try {
             const body = req.body;
             const { id } = req.params;
-            const data = await this.reservationServices.UpdateReservation(Number(id),body);
+            const data = await this.reservationServices.updateReservation(Number(id),body);
             if(!data) return res.status(404).json({ msg: 'Reservation not found' });
             res.status(200).json( data );
         } catch (error) {

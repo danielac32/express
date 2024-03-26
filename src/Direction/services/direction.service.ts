@@ -18,8 +18,8 @@ export class DirectionService {
 
     public getDirections = async() => {
         try {
-            const Directions = await prisma.direction.findMany();
-            return Directions;
+            const directions = await prisma.direction.findMany();
+            return directions;
         } catch (error) {
             console.log(error);
             throw error
@@ -28,27 +28,27 @@ export class DirectionService {
     
     public getDirection = async(id: number) => {
         try {
-            const Direction = await prisma.direction.findFirst({
+            const direction = await prisma.direction.findFirst({
               where: {
                 //userId: userId,
                 id:id
               },
             })
-            return Direction;
+            return direction;
         } catch (error) {
             console.log(error);       
             throw error;
         }
     }
 
-    public UpdateDirection = async(id: number,newData:Direction) => {
+    public updateDirection = async(id: number,newData:Direction) => {
         try {
-            const DataDirection = await this.getDirection(id);
-            if(!DataDirection) return null;
+            const dataDirection = await this.getDirection(id);
+            if(!dataDirection) return null;
             const updatedDirection = await prisma.direction.update({
 
               where: {
-                id: DataDirection.id
+                id: dataDirection.id
               },
               data: {address:newData.address},
             });
@@ -60,15 +60,14 @@ export class DirectionService {
         }
     }
 
-
     public deleteDirection = async(id: number) => {
         try {
-            const DataDirection = await this.getDirection(id);
-            if(!DataDirection) return null;
+            const dataDirection = await this.getDirection(id);
+            if(!dataDirection) return null;
     
             const deletedDirection = await prisma.direction.update({//delete
               where: {
-                id: DataDirection.id
+                id: dataDirection.id
               },
               data: {address:"null"},
             });

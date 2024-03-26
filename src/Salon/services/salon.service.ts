@@ -1,8 +1,13 @@
+import { ReservationServices } from "../../Reservar/services/reservation.service";
 import { prisma } from "../../db/db-connection";
 import { Salon } from "../interfaces/salon.interface";
 
 
 export class SalonService {
+    constructor(
+        private reservationServices: ReservationServices
+    ) {}
+
     public createSalon = async(data: Salon) => {
         try {
             const newSalon = await prisma.salon.create({
@@ -41,14 +46,14 @@ export class SalonService {
         }
     }
 
-    public UpdateSalon = async(id: number,newData:Salon) => {
+    public updateSalon = async(id: number,newData:Salon) => {
         try {
-            const DataSalon = await this.getSalon(id);
-            if(!DataSalon) return null;
+            const dataSalon = await this.getSalon(id);
+            if(!dataSalon) return null;
             const updatedSalon = await prisma.salon.update({
 
               where: {
-                id: DataSalon.id
+                id: dataSalon.id
               },
               data: {name:newData.name},
             });
@@ -60,21 +65,32 @@ export class SalonService {
         }
     }
 
-
     public deleteSalon = async(id: number) => {
         try {
-            const DataSalon = await this.getSalon(id);
-            if(!DataSalon) return null;
+            const dataSalon = await this.getSalon(id);
+            if(!dataSalon) return null;
     
             const deletedSalon = await prisma.salon.update({//delete
               where: {
-                id: DataSalon.id
+                id: dataSalon.id
               },
               data: {name:"null"},
             });
             return deletedSalon;
         } catch (error) {
             console.log(error);
+            throw error;
+        }
+    }
+
+    public getReservationsBySalon = async(id: number) => {
+        try {
+            const salon = await this.getSalon(id);
+            if(!salon) return null;
+
+            const reservations = await this.reservationServices.reservationsBySalon(salon.id);
+            return reservations;
+        } catch (error) {
             throw error;
         }
     }

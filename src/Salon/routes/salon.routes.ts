@@ -9,4 +9,7 @@ router.get('/:id', salonController.readById);
 router.patch('/:id', salonController.update);
 router.delete('/:id', salonController.delete);
 
+// Reservations
+router.get('/:id/reservations', salonController.getReservationsBySalon);
+
 export default router;

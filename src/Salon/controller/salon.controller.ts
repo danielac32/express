@@ -45,10 +45,10 @@ export class SalonController {
         }
     }
     public update = async(req: Request, res: Response) => {
-    try {
+        try {
             const body = req.body;
             const { id } = req.params;
-            const data = await this.salonService.UpdateSalon(Number(id),body);
+            const data = await this.salonService.updateSalon(Number(id),body);
             if(!data) return res.status(404).json({ msg: 'salon not found' });
             res.status(200).json( data );
         } catch (error) {
@@ -57,7 +57,7 @@ export class SalonController {
     };
 
     public delete = async(req: Request, res: Response) => {
-    try {
+        try {
             const { id } = req.params;
             const data = await this.salonService.deleteSalon(Number(id));
             if(!data) return res.status(404).json({ msg: 'salon not found' });
@@ -66,5 +66,18 @@ export class SalonController {
             res.status(500).json({ msg: 'Internal server error' });
         }
     };
+
+    public getReservationsBySalon = async(req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            const reservations = await this.salonService.getReservationsBySalon(+id);
+            if(!reservations?.length) return res.status(404).json({ message: 'Reservations not found by salon' });
+
+            res.status(200).json({ reservations });
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({ error: 'Talk to administrator' });
+        }
+    }
      
 };

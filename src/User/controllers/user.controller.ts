@@ -49,11 +49,11 @@ export class UserController {
             res.status(500).json({ msg: 'Internal server error' });
         }
     };
-    public UpdateUserByEmail = async(req: Request, res: Response) => {
+    public updateUserByEmail = async(req: Request, res: Response) => {
     try {
             const body = req.body;
             const { email } = req.params;
-            const data = await this.userServices.UpdateUser(email,body);
+            const data = await this.userServices.updateUser(email,body);
             if(!data) return res.status(404).json({ msg: 'User not found' });
             res.status(200).json( data );
         } catch (error) {
@@ -70,6 +70,16 @@ export class UserController {
             res.status(500).json({ msg: 'Internal server error' });
         }
     };
+
+    public reservationsByUser = async(req: Request, res: Response) => {
+        try {
+            const { term } = req.query;
+            const reservations = await this.userServices.getReservationsByUser(term as string);
+            res.status(200).json({ reservations });
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' })
+        }
+    }
 
     public login = async(req: Request, res: Response) => {
         try {
