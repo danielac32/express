@@ -17,6 +17,6 @@ app.use(express.json())
 // Routes
 app.use(userRouter)
 app.use('/salon', salonRouter)
-app.use('/reservation', reservationRouter)
-app.use('/direction', directionRouter)
+app.use('/reservations', reservationRouter)
+app.use('/directions', directionRouter)
 export default app;
