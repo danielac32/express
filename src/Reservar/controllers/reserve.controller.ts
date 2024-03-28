@@ -75,7 +75,6 @@ export class ReservationController {
         try {
             const { id } = req.params;
             const reservation = await this.reservationServices.getReservation(Number(id));
-            console.log(reservation)
             res.status(200).json({
                 reservation
             });
