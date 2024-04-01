@@ -11,11 +11,11 @@ export const validateJwt = async(req: Request, res: Response, next: NextFunction
     try {
         const { email } = <JwtPayload>jwt.verify( token, process.env.JWT_KEY! );
         const user = await userServices.getUser(email);
-        if(!user) return res.status(401).json({ msg: 'User not found' });
+        if(!user) return res.status(404).json({ msg: 'User not found' });
 
     } catch (error) {
         res.status(401).json({ msg: 'Invalid token' });
     }
 
     next();
-}
+};

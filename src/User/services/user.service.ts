@@ -4,6 +4,7 @@ import { User } from '../interfaces/user.interface';
 import { generateJwt } from '../../shared/generate-jwt';
 import { prisma } from "../../db/db-connection";
 import { ReservationServices } from '../../Reservar/services/reservation.service';
+import { encrypt, decrypt } from '../../shared/helpers/encypt';
 
 export class UserServices {
     constructor(
@@ -11,12 +12,13 @@ export class UserServices {
     ) {}
 
     public createUser = async(user: User) => {
+        const hashPassword = encrypt(user.password);
         try {
             const newUser = await prisma.userEntity.create({
                 data:{
-                    name: user.name,
-                    email:user.email,
-                    password:user.password,
+                    name:  user.name,
+                    email: user.email,
+                    password: hashPassword,
                     direction: { connect: { id: user.directionId } }
                 }
             });
@@ -39,7 +41,6 @@ export class UserServices {
 
     public getUser = async(term: string) => {
         let user;
-
         // Verifica si el término es un correo electrónico
         if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(term)) {
             user = await prisma.userEntity.findFirst({
@@ -101,7 +102,7 @@ export class UserServices {
             const user = await this.getUser(email);
             if(!user) return null;
 
-            if( user.password === password ) {
+            if(decrypt(password, user.password)) {
                 const token = await generateJwt(user.email);
 
                 return {
@@ -109,6 +110,8 @@ export class UserServices {
                     token
                 }
             }
+
+            return null;
         } catch (error) {
             console.log(error);
             throw error;
