@@ -12,6 +12,14 @@ export class UserServices {
     ) {}
 
     public createUser = async(user: User) => {
+        const res = await this.getUser(user.email);
+        if(res){//si existe el usuario no se puede crear otro igual 
+            return {
+                error:true,
+                code:401,
+                message:"el usuario ya existe"
+            }
+        }
         const hashPassword = encrypt(user.password);
         try {
             const newUser = await prisma.userEntity.create({
@@ -22,7 +30,11 @@ export class UserServices {
                     direction: { connect: { id: user.directionId } }
                 }
             });
-            return newUser;
+            return {
+                error:false,
+                code:201,
+                newUser
+            }
         } catch (error) {
             console.log(error);
             throw error
@@ -49,7 +61,6 @@ export class UserServices {
                 }
             });
         }
-
         if (!user) {
             const userId = parseInt(term);
             if (!isNaN(userId)) {

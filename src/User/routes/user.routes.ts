@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { userController } from '../dependencies';
 import { createUserMiddleware } from '../middlewares/create-user.middleware';
-
+import { loginUserMiddleware } from '../middlewares/login-user.middleware';
 
 const router = Router();
 
@@ -18,6 +18,6 @@ router.delete('/users/:email', userController.deleteUserByEmail);
 // RESERVATIONS USERS
 router.get('/users/:term/reservations', userController.reservationsByUser);
 //LOGIN
-router.post('/auth/login', userController.login);
+router.post('/auth/login', [loginUserMiddleware],userController.login);
 
 export default router;
