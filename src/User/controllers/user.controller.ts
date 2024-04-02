@@ -10,7 +10,11 @@ export class UserController {
         try {
             const body = req.body;
             const data = await this.userServices.createUser(body);  
-            res.status(201).json(data);
+            if(data.error){
+                res.status(data.code).json(data.message);
+            }else{
+                res.status(data.code).json(data.newUser);
+            }
         } catch (error) {
             console.log(error);
             res.status(500).json({ msg: 'Internal server error' });
