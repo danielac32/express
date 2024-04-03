@@ -107,7 +107,8 @@ export class UserController {
             }else{
                 return res.status(data.code).json({
                     user:data.user,
-                    token:data.token
+                    token:data.token,
+                    status:data.code
                 });
             }
         } catch (error) {
