@@ -44,7 +44,19 @@ export class UserServices {
     public getUsers = async() => {
         try {
             const users = await prisma.userEntity.findMany();
-            return users;
+            console.log(users.length);
+
+            if(!users.length)return {
+                error:true,
+                code:404,
+                message:"users not found"
+            };
+
+            return {
+                error:false,
+                code:200,
+                users
+            }
         } catch (error) {
             console.log(error);
             throw error
@@ -71,20 +83,37 @@ export class UserServices {
               });
             }
         }
-        return user;
+        if(!user)return {
+            error:true,
+            code:404,
+            message:"user not found"
+        }
+        return {
+            error:false,
+            code:200,
+            user
+        }
     }
 
     public updateUser = async(email: string,newData: User) => {
         try {
-            const user = await this.getUser(email);
-            if(!user) return null;
+            const {user} = await this.getUser(email);
+            if(!user) return {
+                error:true,
+                code:404,
+                message:"user not found"
+            }
             const updatedUser = await prisma.userEntity.update({
               where: {
                 id: user.id
               },
               data: newData,
             });
-            return updatedUser;
+            return {
+                error:false,
+                code:200,
+                updatedUser
+            }
         } catch (error) {
             console.log(error);
             throw error;
@@ -93,15 +122,23 @@ export class UserServices {
 
     public deleteUser = async(email: string) => {
         try {
-            const user = await this.getUser(email);
+            const {user}  = await this.getUser(email);
             console.log(user);
-            if(!user) return null;
+            if(!user) return {
+                error:true,
+                code:404,
+                message:"user not found"
+            }
             const deletedUser = await prisma.userEntity.delete({
               where: {
                 id: user.id,
               },
             });
-            return deletedUser;
+            return {
+                error:false,
+                code:200,
+                deletedUser
+            }
         } catch (error) {
             console.log(error);
             throw error;
@@ -110,19 +147,28 @@ export class UserServices {
 
     public loginUser = async(email: string, password: string) => {
         try {
-            const user = await this.getUser(email);
-            if(!user) return null;
+            const {user} = await this.getUser(email);
+
+            if(!user) return {
+                error:true,
+                code:401,
+                message:"user not found"
+            }
 
             if(decrypt(password, user.password)) {
                 const token = await generateJwt(user.email);
-
                 return {
+                    error:false,
+                    code:200,
                     user,
                     token
                 }
             }
-
-            return null;
+            return {
+                error:true,
+                code:401,
+                message:"login error"
+            }
         } catch (error) {
             console.log(error);
             throw error;
@@ -132,11 +178,19 @@ export class UserServices {
     public getReservationsByUser = async(term: string) => {
         console.log({ term })
         try {
-            const user = await this.getUser(term);
-            if(!user) return null
-            
+            const {user} = await this.getUser(term);
+            if(!user) return {
+                error:true,
+                code:404,
+                message:"user not found"
+            }
             const reservations = await this.reservationServices.reservationsByUser(user.id);
-            return reservations;
+            return {
+                error:false,
+                code:200,
+                reservations
+            }
+
         } catch (error) {
             throw error;
         }
