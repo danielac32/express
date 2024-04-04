@@ -70,11 +70,13 @@ export class SalonService {
             const dataSalon = await this.getSalon(id);
             if(!dataSalon) return null;
     
-            const deletedSalon = await prisma.salon.update({//delete
+            const deletedSalon = await prisma.salon.delete({//delete
               where: {
                 id: dataSalon.id
               },
-              data: {name:"null"},
+               include: {
+                    reservations: true, // Incluir usuarios relacionados
+              },
             });
             return deletedSalon;
         } catch (error) {

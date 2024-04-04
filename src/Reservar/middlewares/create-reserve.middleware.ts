@@ -7,7 +7,6 @@ export const createReserveMiddleware = (req: Request, res: Response, next: NextF
         'requerimiento',
         'cantidad_persona',
         'descripcion',
-        'state',
         'userId',
         'salonId'
     ];

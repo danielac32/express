@@ -65,11 +65,13 @@ export class DirectionService {
             const dataDirection = await this.getDirection(id);
             if(!dataDirection) return null;
     
-            const deletedDirection = await prisma.direction.update({//delete
-              where: {
+            const deletedDirection = await prisma.direction.delete({//delete
+             where: {
                 id: dataDirection.id
               },
-              data: {address:"null"},
+              include: {
+                    users: true, // Incluir usuarios relacionados
+              },
             });
             return deletedDirection;
         } catch (error) {
