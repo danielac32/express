@@ -13,7 +13,9 @@ export class UserServices {
 
     public createUser = async(user: User) => {
         const res = await this.getUser(user.email);
-        if(res){//si existe el usuario no se puede crear otro igual 
+
+         
+        if(!res.error){//si existe el usuario no se puede crear otro igual 
             return {
                 error:true,
                 code:401,
@@ -103,11 +105,19 @@ export class UserServices {
                 code:404,
                 message:"user not found"
             }
+            const hashPassword = encrypt(newData.password);
+
             const updatedUser = await prisma.userEntity.update({
               where: {
                 id: user.id
               },
-              data: newData,
+              data:{
+                    name:  newData.name,
+                    email: newData.email,
+                    password: hashPassword,
+                    direction: { connect: { id: newData.directionId } }
+              }
+              //data: newData,
             });
             return {
                 error:false,

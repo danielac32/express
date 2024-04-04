@@ -57,7 +57,10 @@ export class UserController {
             if(data.error){
                 return res.status(data.code).json(data.message);
             }else{
-                return res.status(data.code).json(data.updatedUser);
+                return res.status(data.code).json({
+                    user:data.updatedUser,
+                    status:data.code
+                });
             }
             //if(!data) return res.status(404).json({ msg: 'User not found' });
             //res.status(200).json( data );
