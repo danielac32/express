@@ -257,27 +257,21 @@ export class UserServices {
     public getReservationsByUser = async(term: string,state:string) => {
     
         let statusType: StatusReserveTypes;
+        statusType = state as StatusReserveTypes;
 
+        console.log("aqui: ",term)
+        console.log("aqui: ",statusType)
         try {
             const {user} = await this.getUser(term);
             if(!user) return {
                 error:true,
                 code:404,
-                message:"user not found"
+                message:"user not found!"
             }
-            
-            switch (state) {
-                case StatusReserve.PENDING:
-                case StatusReserve.REFUSED:
-                case StatusReserve.ACCEPTED:
-                    statusType = state as StatusReserveTypes; // Convierte el string al tipo correspondiente
-                    break;
-                default:
-                    throw new Error('Estado no válido');
-            }
-            const reservations = await this.reservationServices.reservationsByUser(user.id);
 
-            //const reservations = await this.reservationServices.reservationsByUserAndStatus(user.id,statusType);
+            //const reservations = await this.reservationServices.reservationsByUser(user.id);
+
+            const reservations = await this.reservationServices.reservationsByUserAndStatus(user.id,statusType);
             return {
                 error:false,
                 code:200,
