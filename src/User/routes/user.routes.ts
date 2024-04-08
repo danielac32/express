@@ -3,20 +3,24 @@ import { userController } from '../dependencies';
 import { createUserMiddleware } from '../middlewares/create-user.middleware';
 import { loginUserMiddleware } from '../middlewares/login-user.middleware';
 import { updateUserMiddleware } from '../middlewares/update-user.middleware';
+import { UpdateActiveUserMiddleware } from '../middlewares/update-active.middleware';
+import { validateJwt } from '../../shared/middlewares/validateJwt'
 const router = Router();
 
 // CRUD USERS
 router.post('/users',[
-    createUserMiddleware
+    createUserMiddleware,
 ],userController.storeUser);
 //router.post('/users',userController.sotreUser);
-router.get('/users', userController.allUsers);
-router.get('/users/:email', userController.userByEmail);
-router.patch('/users/:email', [updateUserMiddleware],userController.updateUserByEmail);
-router.delete('/users/:email', userController.deleteUserByEmail);
+router.get('/users', [validateJwt],userController.allUsers);
+router.get('/users/:email', [validateJwt],userController.userByEmail);
+router.patch('/users/:email', [validateJwt,updateUserMiddleware],userController.updateUserByEmail);
+router.delete('/users/:email', [validateJwt],userController.deleteUserByEmail);
 
+router.patch('/userRol/:email',[validateJwt],userController.updateUserRol);
+router.patch('/userActive/:email',[validateJwt],userController.updateUserIsActive);
 // RESERVATIONS USERS
-router.get('/users/:term/reservations', userController.reservationsByUser);
+router.get('/users/:term/reservations/:state', [validateJwt],userController.reservationsByUser);
 //LOGIN
 router.post('/auth/login', [loginUserMiddleware],userController.login);
 

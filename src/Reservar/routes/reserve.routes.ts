@@ -1,18 +1,19 @@
 import { Router } from "express";
 import { reservationController } from "../dependencies";
 import { createReserveMiddleware } from '../middlewares/create-reserve.middleware';
-
+import { validateJwt } from '../../shared/middlewares/validateJwt'
 
 
 const router = Router();
 
-router.post('/', [createReserveMiddleware],reservationController.create);
-router.get('/', reservationController.read);
-router.get('/:id', reservationController.readById);
-router.patch('/:id', reservationController.update);
-router.delete('/:id', reservationController.delete);
+router.post('/', [createReserveMiddleware,validateJwt],reservationController.create);
+router.get('/', [validateJwt],reservationController.read);
+router.get('/withUsers', [validateJwt],reservationController.read2);
+router.get('/:id', [validateJwt],reservationController.readById);
+router.patch('/:id', [validateJwt],reservationController.update);
+router.delete('/:id', [validateJwt],reservationController.delete);
 
-router.patch('/:id/change-status', reservationController.changeStatusInReservation);
+router.patch('/:id/change-status', [validateJwt],reservationController.changeStatusInReservation);
 
 
 export default router;

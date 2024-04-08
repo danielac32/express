@@ -51,6 +51,20 @@ export class ReservationController {
             res.status(500)
         }
     }
+    public read2 = async(req: Request, res: Response) => {
+        const { state, endDate, startDate } = req.query;
+        const filter: FilterQueryReservation = {};
+        filter.state = state as StatusReserveTypes;
+        try {
+            const reservations = await this.reservationServices.getReservationWithUser(filter);
+            res.status(200).json({
+                reservations
+            });
+        } catch (error) {
+            res.status(500)
+        }
+    }
+
     public readById = async(req: Request, res: Response) => {
         try {
             const { id } = req.params;

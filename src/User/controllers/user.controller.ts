@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { UserServices } from '../services/user.service';
 
+import { FilterQueryReservation } from '../../Reservar/interfaces/filter-querys';
+import { StatusReserveTypes } from "../../Reservar/interfaces/reserve.interface";
+
+
+
 export class UserController {
     constructor (
         private userServices: UserServices
@@ -27,7 +32,8 @@ export class UserController {
             if(data.error){
                 return res.status(data.code).json(data.message);
             }else{
-                return res.status(data.code).json(data.users);
+                //console.log(data.users)
+                return res.status(data.code).json(data);
             }
 
         } catch (error) {
@@ -68,7 +74,42 @@ export class UserController {
             return res.status(500).json({ msg: 'Internal server error' });
         }
     };
+    public updateUserIsActive = async(req: Request, res: Response) => {
+    try {
+            const {isActive} = req.body;
+            const { email } = req.params;
 
+            const data = await this.userServices.updateActive(email,isActive);
+            if(data.error){
+                return res.status(data.code).json(data.message);
+            }else{
+                return res.status(data.code).json({
+                    user:data.updatedUser,
+                    status:data.code
+                });
+            }
+        } catch (error) {
+            return res.status(500).json({ msg: 'Internal server error' });
+        }
+    };
+    public updateUserRol = async(req: Request, res: Response) => {
+    try {
+            const {rol} = req.body;
+            const { email } = req.params;
+
+            const data = await this.userServices.updateRol(email,rol);
+            if(data.error){
+                return res.status(data.code).json(data.message);
+            }else{
+                return res.status(data.code).json({
+                    user:data.updatedUser,
+                    status:data.code
+                });
+            }
+        } catch (error) {
+            return res.status(500).json({ msg: 'Internal server error' });
+        }
+    };
     public deleteUserByEmail = async(req: Request, res: Response) => {
         try {
             const data = await this.userServices.deleteUser(req.params.email);
@@ -85,13 +126,17 @@ export class UserController {
     };
 
     public reservationsByUser = async(req: Request, res: Response) => {
+        const { term ,state } = req.params;
+        //const filter: FilterQueryReservation = {};
+        //filter.state = state as StatusReserveTypes;
+
         try {
-            const { term } = req.params;
-            const reservations = await this.userServices.getReservationsByUser(term as string);
+
+            const reservations = await this.userServices.getReservationsByUser(term as string,state as string);
             if(reservations.error){
                 return res.status(reservations.code).json(reservations.message);
             }else{
-                return res.status(reservations.code).json(reservations.reservations);
+                return res.status(reservations.code).json({ reservations: reservations.reservations });
             }
             //res.status(200).json({ reservations });
         } catch (error) {

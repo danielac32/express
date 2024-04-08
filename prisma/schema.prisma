@@ -15,6 +15,7 @@ model userEntity {
   name      String
   email     String @unique
   isActive  Boolean  @default(true)
+  rol      String @default("user")
   password  String
   direction Direction @relation(fields: [directionId], references: [id])
   directionId Int    //@unique
@@ -30,8 +31,8 @@ model Direction {
  
 model Reservation {
   id         Int          @id @default(autoincrement())
-  startDate  DateTime
-  endDate    DateTime
+  startDate  DateTime     
+  endDate    DateTime     
   requerimiento   String
   cantidad_persona   Int
   descripcion   String
