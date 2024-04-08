@@ -4,11 +4,20 @@ import { FilterQueryReservation } from "../interfaces/filter-querys";
 
 export class ReservationServices {
     public createReservation = async(reserveData: Reserve) => {
+        const startDate=new Date(reserveData.startDate);
+        const endDate=new Date(reserveData.endDate);
+
+        startDate.setHours(startDate.getHours() - 4);
+        //console.log(startDate); 
+
+        endDate.setHours(endDate.getHours() - 4);
+        //console.log(endDate); 
+
         try {
             const newReservation = await prisma.reservation.create({
                 data:{
-                    startDate: new Date(reserveData.startDate),
-                    endDate: new Date(reserveData.endDate),
+                    startDate: startDate,//new Date(reserveData.startDate),
+                    endDate: endDate,//new Date(reserveData.endDate),
                     requerimiento:reserveData.requerimiento,
                     cantidad_persona:reserveData.cantidad_persona,
                     descripcion:reserveData.descripcion,
@@ -28,6 +37,24 @@ export class ReservationServices {
         try {
             const reservations = await prisma.reservation.findMany({
                 where: filter
+            });
+            return reservations;
+        } catch (error) {
+            console.log(error);
+            throw error
+        }
+    }
+    public getReservationWithUser = async(filter?: FilterQueryReservation) => {
+        try {
+            const reservations = await prisma.reservation.findMany({
+                where: filter,
+                include: {
+                   user:{
+                      include: {
+                        direction:true
+                      }
+                   }
+                }
             });
             return reservations;
         } catch (error) {
@@ -84,12 +111,44 @@ export class ReservationServices {
         }
     }
 
+
+    public reservationsByUserAndStatus = async(userId: number,status: StatusReserveTypes) => {
+        try {
+            const reservations = await prisma.reservation.findMany({
+                /*where: {
+                    userId
+                }*/
+                where: {userId,state: status},
+                include: {
+                   user:{
+                      include: {
+                        direction:true
+                      }
+                   }
+                }
+
+            })
+            return reservations;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     public reservationsByUser = async(userId: number) => {
         try {
             const reservations = await prisma.reservation.findMany({
-                where: {
+                /*where: {
                     userId
+                }*/
+                where: {userId},
+                include: {
+                   user:{
+                      include: {
+                        direction:true
+                      }
+                   }
                 }
+
             })
             return reservations;
         } catch (error) {

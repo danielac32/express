@@ -3,9 +3,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { userServices } from '../../User/dependencies';
 
 export const validateJwt = async(req: Request, res: Response, next: NextFunction) => {
-    
-    const token = req.header('token');
-
+    const token = req.headers.authorization?.split(' ')[1];
+   // const token = req.header('token');
+    console.log(token)
     if(!token) return res.status(401).json({ msg: 'Unathorized' });
 
     try {

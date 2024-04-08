@@ -5,11 +5,17 @@ import { generateJwt } from '../../shared/generate-jwt';
 import { prisma } from "../../db/db-connection";
 import { ReservationServices } from '../../Reservar/services/reservation.service';
 import { encrypt, decrypt } from '../../shared/helpers/encypt';
+import { StatusReserveTypes,StatusReserve } from "../../Reservar/interfaces/reserve.interface";
+import { FilterQueryReservation } from '../../Reservar/interfaces/filter-querys';
+
+
+
 
 export class UserServices {
     constructor(
         private reservationServices: ReservationServices
     ) {}
+    
 
     public createUser = async(user: User) => {
         const res = await this.getUser(user.email);
@@ -29,7 +35,8 @@ export class UserServices {
                     name:  user.name,
                     email: user.email,
                     password: hashPassword,
-                    direction: { connect: { id: user.directionId } }
+                    direction: { connect: { id: user.directionId } },
+                    rol:user.rol
                 }
             });
             return {
@@ -42,10 +49,15 @@ export class UserServices {
             throw error
         }
     };
-
+    
+ 
     public getUsers = async() => {
         try {
-            const users = await prisma.userEntity.findMany();
+             const users = await prisma.userEntity.findMany({
+              include: {
+                direction: true,
+              },
+            });
             console.log(users.length);
 
             if(!users.length)return {
@@ -96,7 +108,64 @@ export class UserServices {
             user
         }
     }
+    
 
+    public updateRol = async(email: string,rol: string) => {
+            try{
+                const {user} = await this.getUser(email);
+
+                if(!user) return {
+                    error:true,
+                    code:404,
+                    message:"user not found"
+                }
+    
+                const updatedUser = await prisma.userEntity.update({
+                    where: {
+                        id: user.id
+                    },
+                    data:{
+                        rol:rol
+                    }
+                    });
+                return {
+                    error:false,
+                    code:200,
+                    updatedUser
+                }
+            }catch (error) {
+                console.log(error);
+                throw error;
+            }
+    }
+    public updateActive = async(email: string,active: boolean) => {
+            try{
+                const {user} = await this.getUser(email);
+
+                if(!user) return {
+                    error:true,
+                    code:404,
+                    message:"user not found"
+                }
+    
+                const updatedUser = await prisma.userEntity.update({
+                    where: {
+                        id: user.id
+                    },
+                    data:{
+                        isActive:active
+                    }
+                    });
+                return {
+                    error:false,
+                    code:200,
+                    updatedUser
+                }
+            }catch (error) {
+                console.log(error);
+                throw error;
+            }
+    }
     public updateUser = async(email: string,newData: User) => {
         try {
             const {user} = await this.getUser(email);
@@ -185,8 +254,10 @@ export class UserServices {
         }
     }
 
-    public getReservationsByUser = async(term: string) => {
-        console.log({ term })
+    public getReservationsByUser = async(term: string,state:string) => {
+    
+        let statusType: StatusReserveTypes;
+
         try {
             const {user} = await this.getUser(term);
             if(!user) return {
@@ -194,7 +265,19 @@ export class UserServices {
                 code:404,
                 message:"user not found"
             }
+            
+            switch (state) {
+                case StatusReserve.PENDING:
+                case StatusReserve.REFUSED:
+                case StatusReserve.ACCEPTED:
+                    statusType = state as StatusReserveTypes; // Convierte el string al tipo correspondiente
+                    break;
+                default:
+                    throw new Error('Estado no válido');
+            }
             const reservations = await this.reservationServices.reservationsByUser(user.id);
+
+            //const reservations = await this.reservationServices.reservationsByUserAndStatus(user.id,statusType);
             return {
                 error:false,
                 code:200,

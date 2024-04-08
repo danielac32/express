@@ -1,15 +1,16 @@
 import { Router } from 'express';
 import { salonController } from '../dependencies';
+import { validateJwt } from '../../shared/middlewares/validateJwt'
 
 const router = Router();
 
-router.post('/', salonController.create);
-router.get('/', salonController.read);
-router.get('/:id', salonController.readById);
-router.patch('/:id', salonController.update);
-router.delete('/:id', salonController.delete);
+router.post('/', [validateJwt],salonController.create);
+router.get('/',[validateJwt], salonController.read);
+router.get('/:id', [validateJwt],salonController.readById);
+router.patch('/:id',[validateJwt], salonController.update);
+router.delete('/:id',[validateJwt], salonController.delete);
 
 // Reservations
-router.get('/:id/reservations', salonController.getReservationsBySalon);
+router.get('/:id/reservations',[validateJwt], salonController.getReservationsBySalon);
 
 export default router;
