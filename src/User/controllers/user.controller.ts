@@ -126,7 +126,8 @@ export class UserController {
     };
 
     public reservationsByUser = async(req: Request, res: Response) => {
-        const { term ,state } = req.params;
+        const { term } = req.params;
+        const { state } = req.params;
         //const filter: FilterQueryReservation = {};
         //filter.state = state as StatusReserveTypes;
 
