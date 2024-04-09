@@ -4,6 +4,7 @@ CREATE TABLE "userEntity" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "rol" TEXT NOT NULL DEFAULT 'user',
     "password" TEXT NOT NULL,
     "directionId" INTEGER NOT NULL,
     CONSTRAINT "userEntity_directionId_fkey" FOREIGN KEY ("directionId") REFERENCES "Direction" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
@@ -21,11 +22,12 @@ CREATE TABLE "Reservation" (
     "startDate" DATETIME NOT NULL,
     "endDate" DATETIME NOT NULL,
     "requerimiento" TEXT NOT NULL,
-    "cantidad_persona" TEXT NOT NULL,
+    "cantidad_persona" INTEGER NOT NULL,
     "descripcion" TEXT NOT NULL,
     "state" TEXT NOT NULL,
     "userId" INTEGER NOT NULL,
     "salonId" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Reservation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "userEntity" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "Reservation_salonId_fkey" FOREIGN KEY ("salonId") REFERENCES "Salon" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );

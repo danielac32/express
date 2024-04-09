@@ -4,8 +4,8 @@ import { validateJwt } from '../../shared/middlewares/validateJwt'
 
 const router = Router();
 
-router.post('/', [validateJwt],salonController.create);
-router.get('/',[validateJwt], salonController.read);
+router.post('/', /*[validateJwt], */salonController.create);
+router.get('/', /*[validateJwt], */ salonController.read);
 router.get('/:id', [validateJwt],salonController.readById);
 router.patch('/:id',[validateJwt], salonController.update);
 router.delete('/:id',[validateJwt], salonController.delete);

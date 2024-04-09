@@ -12,7 +12,7 @@ router.post('/users',[
     createUserMiddleware,
 ],userController.storeUser);
 //router.post('/users',userController.sotreUser);
-router.get('/users', [validateJwt],userController.allUsers);
+router.get('/users', /*[validateJwt] ,*/userController.allUsers);
 router.get('/users/:email', [validateJwt],userController.userByEmail);
 router.patch('/users/:email', [validateJwt,updateUserMiddleware],userController.updateUserByEmail);
 router.delete('/users/:email', [validateJwt],userController.deleteUserByEmail);
@@ -20,7 +20,7 @@ router.delete('/users/:email', [validateJwt],userController.deleteUserByEmail);
 router.patch('/userRol/:email',[validateJwt],userController.updateUserRol);
 router.patch('/userActive/:email',[validateJwt],userController.updateUserIsActive);
 // RESERVATIONS USERS
-router.get('/users/:term/reservations/:state', [validateJwt],userController.reservationsByUser);
+router.get('/users/:term/reservations/', /*[validateJwt] ,*/ userController.reservationsByUser);
 //LOGIN
 router.post('/auth/login', [loginUserMiddleware],userController.login);
 

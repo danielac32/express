@@ -8,9 +8,6 @@ import { encrypt, decrypt } from '../../shared/helpers/encypt';
 import { StatusReserveTypes,StatusReserve } from "../../Reservar/interfaces/reserve.interface";
 import { FilterQueryReservation } from '../../Reservar/interfaces/filter-querys';
 
-
-
-
 export class UserServices {
     constructor(
         private reservationServices: ReservationServices
@@ -19,8 +16,7 @@ export class UserServices {
 
     public createUser = async(user: User) => {
         const res = await this.getUser(user.email);
-
-         
+   
         if(!res.error){//si existe el usuario no se puede crear otro igual 
             return {
                 error:true,
@@ -108,63 +104,61 @@ export class UserServices {
             user
         }
     }
-    
+    public updateRol = async(email: string, rol: string) => {
+        try{
+            const {user} = await this.getUser(email);
 
-    public updateRol = async(email: string,rol: string) => {
-            try{
-                const {user} = await this.getUser(email);
-
-                if(!user) return {
-                    error:true,
-                    code:404,
-                    message:"user not found"
-                }
-    
-                const updatedUser = await prisma.userEntity.update({
-                    where: {
-                        id: user.id
-                    },
-                    data:{
-                        rol:rol
-                    }
-                    });
-                return {
-                    error:false,
-                    code:200,
-                    updatedUser
-                }
-            }catch (error) {
-                console.log(error);
-                throw error;
+            if(!user) return {
+                error:true,
+                code:404,
+                message:"user not found"
             }
+
+            const updatedUser = await prisma.userEntity.update({
+                where: {
+                    id: user.id
+                },
+                data:{
+                    rol
+                }
+            });
+            return {
+                error:false,
+                code:200,
+                updatedUser
+            }
+        }catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
     public updateActive = async(email: string,active: boolean) => {
-            try{
-                const {user} = await this.getUser(email);
+        try{
+            const {user} = await this.getUser(email);
 
-                if(!user) return {
-                    error:true,
-                    code:404,
-                    message:"user not found"
-                }
-    
-                const updatedUser = await prisma.userEntity.update({
-                    where: {
-                        id: user.id
-                    },
-                    data:{
-                        isActive:active
-                    }
-                    });
-                return {
-                    error:false,
-                    code:200,
-                    updatedUser
-                }
-            }catch (error) {
-                console.log(error);
-                throw error;
+            if(!user) return {
+                error:true,
+                code:404,
+                message:"user not found"
             }
+
+            const updatedUser = await prisma.userEntity.update({
+                where: {
+                    id: user.id
+                },
+                data:{
+                    isActive:active
+                }
+            });
+            return {
+                error:false,
+                code:200,
+                updatedUser
+            }
+        }catch (error) {
+            console.log(error);
+            throw error;
+        }
     }
     public updateUser = async(email: string,newData: User) => {
         try {
@@ -181,10 +175,10 @@ export class UserServices {
                 id: user.id
               },
               data:{
-                    name:  newData.name,
-                    email: newData.email,
-                    password: hashPassword,
-                    direction: { connect: { id: newData.directionId } }
+                name:  newData.name,
+                email: newData.email,
+                password: hashPassword,
+                direction: { connect: { id: newData.directionId } }
               }
               //data: newData,
             });
@@ -253,14 +247,11 @@ export class UserServices {
             throw error;
         }
     }
-
-    public getReservationsByUser = async(term: string,state:string) => {
+    public getReservationsByUser = async(term: string, state?:string, limit?: number, page?: number) => {
     
         let statusType: StatusReserveTypes;
         statusType = state as StatusReserveTypes;
 
-        console.log("aqui: ",term)
-        console.log("aqui: ",statusType)
         try {
             const {user} = await this.getUser(term);
             if(!user) return {
@@ -269,12 +260,10 @@ export class UserServices {
                 message:"user not found!"
             }
 
-            //const reservations = await this.reservationServices.reservationsByUser(user.id);
-
-            const reservations = await this.reservationServices.reservationsByUserAndStatus(user.id,statusType);
+            const reservations = await this.reservationServices.reservationsByUser(user.id, statusType, limit, page);
             return {
-                error:false,
-                code:200,
+                error: false,
+                code: 200,
                 reservations
             }
 
@@ -283,42 +272,3 @@ export class UserServices {
         }
     }
 };
-
-
-/*const newUser = await prisma.userEntity.create({
-    data:{
-            name: "daniel",
-            email:"daniel@daniel.com",
-            password:"ac32mqn42",
-            direction:"dgtic"
-    }
-});
-console.log(newUser);*/
-
-/*await prisma.direction.create({
-    data: {
-        address:"dgtic"
-    }
-});*/
-
-/*await prisma.salon.create({
-    data: {
-        name:"simon bolivar"
-    }
-});*/
-
-
-/*const newReservation = await prisma.reservation.create({
-    data: {
-    startDate: new Date(), // Asigna la fecha de inicio actual
-    endDate: new Date(), // Asigna la fecha de finalización actual
-    requerimiento: 'Algo', // Ejemplo de requerimiento
-    cantidad_persona: 2, // Ejemplo de cantidad de personas
-    descripcion: 'Descripción de la reserva', // Ejemplo de descripción
-    state: 'Pendiente', // Estado inicial de la reserva
-    userId: 1, // ID del usuario asociado
-    salonId: 1 // ID del salón asociado
-    }
-});*/
-
-// console.log('Nueva reservación creada:', newReservation);

@@ -3,24 +3,8 @@ import { ReservationServices } from '../services/reservation.service';
 import { FilterQueryReservation } from '../interfaces/filter-querys';
 import { StatusReserveTypes } from '../interfaces/reserve.interface';
 
-/*
-{
-  "startDate": "2024-04-01T08:00:00Z",
-  "endDate": "2024-04-15T12:00:00Z",
-  "requerimiento": "Algo",
-  "cantidad_persona": 4,
-  "descripcion": "Descripción de la reserva",
-  "state": "Activa",
-  "userId": 1,
-  "salonId": 1
-}*/
-
-
 export class ReservationController {
-
-    constructor (
-        private reservationServices: ReservationServices
-    ) {}
+    constructor (private reservationServices: ReservationServices) {}
 
     public create = async(req: Request, res: Response) => {
         try {
@@ -36,7 +20,6 @@ export class ReservationController {
             res.status(500).json({ error: 'Talk to administrator' });
         }
     };
-
     public read = async(req: Request, res: Response) => {
         const { state, endDate, startDate } = req.query;
         const filter: FilterQueryReservation = {};
@@ -51,20 +34,6 @@ export class ReservationController {
             res.status(500)
         }
     }
-    public read2 = async(req: Request, res: Response) => {
-        const { state, endDate, startDate } = req.query;
-        const filter: FilterQueryReservation = {};
-        filter.state = state as StatusReserveTypes;
-        try {
-            const reservations = await this.reservationServices.getReservationWithUser(filter);
-            res.status(200).json({
-                reservations
-            });
-        } catch (error) {
-            res.status(500)
-        }
-    }
-
     public readById = async(req: Request, res: Response) => {
         try {
             const { id } = req.params;
@@ -98,7 +67,6 @@ export class ReservationController {
             res.status(500).json({ msg: 'Internal server error' });
         }
     };
-
     public changeStatusInReservation = async(req: Request, res: Response) => {
         try {
             const { id } = req.params;
@@ -108,6 +76,5 @@ export class ReservationController {
         } catch (error) {
             res.status(500)
         }
-    }
-
+    };
 };

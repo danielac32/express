@@ -15,7 +15,7 @@ model userEntity {
   name      String
   email     String @unique
   isActive  Boolean  @default(true)
-  rol      String @default("user")
+  rol       String @default("user")
   password  String
   direction Direction @relation(fields: [directionId], references: [id])
   directionId Int    //@unique
@@ -41,6 +41,7 @@ model Reservation {
   userId     Int
   salon      Salon        @relation(fields: [salonId], references: [id])
   salonId    Int
+  createdAt  DateTime @default(now())
 }
 
 model Salon {

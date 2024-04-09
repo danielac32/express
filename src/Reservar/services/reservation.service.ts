@@ -8,10 +8,7 @@ export class ReservationServices {
         const endDate=new Date(reserveData.endDate);
 
         startDate.setHours(startDate.getHours() - 4);
-        //console.log(startDate); 
-
         endDate.setHours(endDate.getHours() - 4);
-        //console.log(endDate); 
 
         try {
             const newReservation = await prisma.reservation.create({
@@ -36,24 +33,16 @@ export class ReservationServices {
     public getReservations = async(filter?: FilterQueryReservation) => {
         try {
             const reservations = await prisma.reservation.findMany({
-                where: filter
-            });
-            return reservations;
-        } catch (error) {
-            console.log(error);
-            throw error
-        }
-    }
-    public getReservationWithUser = async(filter?: FilterQueryReservation) => {
-        try {
-            const reservations = await prisma.reservation.findMany({
                 where: filter,
                 include: {
-                   user:{
-                      include: {
+                    user:{
+                       include: {
                         direction:true
-                      }
-                   }
+                       }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc'
                 }
             });
             return reservations;
@@ -62,14 +51,19 @@ export class ReservationServices {
             throw error
         }
     }
-
     public getReservation = async(id: number) => {
         try {
             const Reservation = await prisma.reservation.findFirst({
               where: {
-                //userId: userId,
-                id:id
+                id
               },
+              include: {
+                user:{
+                   include: {
+                    direction:true
+                   }
+                }
+            }
             })
             return Reservation;
         } catch (error) {
@@ -110,52 +104,25 @@ export class ReservationServices {
             throw error;
         }
     }
-
-
-    public reservationsByUserAndStatus = async(userId: number,status: StatusReserveTypes) => {
+    public reservationsByUser = async(userId: number, status?: StatusReserveTypes, limit: number = 10, page: number = 1) => {
         try {
             const reservations = await prisma.reservation.findMany({
-                /*where: {
-                    userId
-                }*/
-                where: {userId,state: status},
+                where: { userId, state: status },
                 include: {
                    user:{
                       include: {
                         direction:true
                       }
                    }
-                }
-
+                },
+                skip: (page -1 ),
+                take: limit,
             })
             return reservations;
         } catch (error) {
             throw error;
         }
     }
-
-    public reservationsByUser = async(userId: number) => {
-        try {
-            const reservations = await prisma.reservation.findMany({
-                /*where: {
-                    userId
-                }*/
-                where: {userId},
-                include: {
-                   user:{
-                      include: {
-                        direction:true
-                      }
-                   }
-                }
-
-            })
-            return reservations;
-        } catch (error) {
-            throw error;
-        }
-    }
-
     public reservationsBySalon = async(salonId: number) => {
         try {
             const reservations = await prisma.reservation.findMany({
@@ -168,9 +135,7 @@ export class ReservationServices {
             throw error;
         }
     }
-
     public changeReservationStatus = async(id: number, status: StatusReserveTypes) => {
-        console.log({ status })
         try {
             const reservation = await prisma.reservation.update({
                 where: {

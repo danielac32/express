@@ -7,6 +7,7 @@ export interface Reserve {
   state: string;
   userId: number;
   salonId: number;
+  createdAt: Date
 }
 
 export enum StatusReserve {
