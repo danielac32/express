@@ -11,9 +11,9 @@ export interface Reserve {
 }
 
 export enum StatusReserve {
-  PENDING = 'pending',
-  REFUSED = 'refused',
-  ACCEPTED = 'accepted'
+  PENDING = 'PENDING',
+  REFUSED = 'REFUSED',
+  ACCEPTED = 'ACCEPTED'
 };
 
 export type StatusReserveTypes = StatusReserve.ACCEPTED | StatusReserve.PENDING | StatusReserve.REFUSED;

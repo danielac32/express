@@ -21,7 +21,7 @@ export class ReservationController {
         }
     };
     public read = async(req: Request, res: Response) => {
-        const { state, endDate, startDate } = req.query;
+        const { state, endDate, startDate ,limit = 10, page = 1} = req.query;
         const filter: FilterQueryReservation = {};
         filter.state = state as StatusReserveTypes;
 
