@@ -21,7 +21,7 @@ export class UserServices {
             return {
                 error:true,
                 code:401,
-                message:"el usuario ya existe"
+                message:"El usuario ya existe"
             }
         }
         const hashPassword = encrypt(user.password);

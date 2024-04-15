@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.userEntity.create({
+  /*await prisma.userEntity.create({
     data:
       {
         name: 'Usuario 1',
@@ -21,20 +21,33 @@ async function main() {
     data:
       { name: 'Salón 1' }
   });
+*/
 
-  await prisma.reservation.create({
-        data:
-        {
-            startDate: new Date(),
-            endDate: new Date(),
-            requerimiento: 'Requerimiento 1',
-            cantidad_persona: 5,
-            descripcion: 'Descripción 1',
-            state: 'PENDING',
-            userId: 1, // ID del usuario asociado
-            salonId: 1 // ID del salón asociado
-        },
-    })
+    const valoresAdicionales = [
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' }
+
+    ];
+
+    for (const valor of valoresAdicionales) {
+        await prisma.reservation.create({
+            data: {
+                startDate: new Date(),
+                endDate: new Date(),
+                requerimiento: valor.requerimiento,
+                cantidad_persona: 5,
+                descripcion: valor.descripcion,
+                state: 'PENDING',
+                userId: 3, // ID del usuario asociado
+                salonId: 1 // ID del salón asociado
+            }
+        });
+    }
 
 }
 
