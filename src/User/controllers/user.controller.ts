@@ -107,7 +107,7 @@ export class UserController {
             const resp = await this.userServices.getReservationsByUser(term as string, state as string, Number(limit), Number(page));
             if(resp.error) return res.status(resp.code).json(resp.message);
 
-            return res.status(resp.code).json({ reservations: resp.reservations });
+            return res.status(resp.code).json({ reservations: resp.reservations, meta: resp.meta });
         } catch (error) {
             console.log(error)
             return res.status(500).json({ error: 'Internal server error' })

@@ -106,19 +106,44 @@ export class ReservationServices {
     }
     public reservationsByUser = async(userId: number, status?: StatusReserveTypes, limit: number = 10, page: number = 1) => {
         try {
-            const reservations = await prisma.reservation.findMany({
-                where: { userId, state: status },
-                include: {
-                   user:{
-                      include: {
-                        direction:true
-                      }
-                   }
-                },
-                skip: (page -1 ),
-                take: limit,
-            })
-            return reservations;
+            // const reservations = await prisma.reservation.findMany({
+            //     where: { userId, state: status },
+            //     include: {
+            //        user:{
+            //           include: {
+            //             direction:true
+            //           }
+            //        }
+            //     },
+            //     skip: (page -1 ),
+            //     take: limit,
+            // })
+            // return reservations;
+            const [total, reservations] = await Promise.all([
+                prisma.reservation.count({ where: { userId, state: status }}),
+
+                prisma.reservation.findMany({
+                    where: { userId, state: status },
+                    include: {
+                        user:{
+                            include: {
+                            direction:true
+                            }
+                        }
+                    },
+                    skip: (page -1 ),
+                    take: limit,
+                })
+            ]);
+
+            const lastPage = Math.ceil(total / limit);
+
+            return {
+                total,
+                lastPage,
+                page,
+                reservations,
+            };
         } catch (error) {
             throw error;
         }
