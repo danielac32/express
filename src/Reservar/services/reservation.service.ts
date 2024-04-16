@@ -30,25 +30,39 @@ export class ReservationServices {
         }
     };
 
-    public getReservations = async(filter?: FilterQueryReservation) => {
+    public getReservations = async(filter?: FilterQueryReservation, page = 1, limit = 10) => {
         try {
-            const reservations = await prisma.reservation.findMany({
-                where: filter,
-                include: {
-                    user:{
-                       include: {
-                        direction:true
-                       }
-                    }
-                },
-                orderBy: {
-                    createdAt: 'desc'
+            const [total, reservations] = await Promise.all([
+                prisma.reservation.count({ where: filter}),
+    
+                prisma.reservation.findMany({
+                    where: filter,
+                    include: {
+                        user:{
+                            include: {
+                            direction:true
+                            }
+                        }
+                    },
+                    skip: (page -1 ),
+                    take: limit,
+                })
+            ]);
+    
+            const lastPage = Math.ceil(total / limit);
+    
+            return {
+                error: false,
+                code: 200,
+                reservations,
+                meta: {
+                    total,
+                    page,
+                    lastPage
                 }
-            });
-            return reservations;
+            }
         } catch (error) {
-            console.log(error);
-            throw error
+            throw error;
         }
     }
     public getReservation = async(id: number) => {
