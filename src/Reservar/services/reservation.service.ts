@@ -44,7 +44,7 @@ export class ReservationServices {
                             }
                         }
                     },
-                    skip: (page -1 ),
+                    skip: (page -1 )* limit,
                     take: limit,
                 })
             ]);
@@ -145,7 +145,7 @@ export class ReservationServices {
                             }
                         }
                     },
-                    skip: (page -1 ),
+                    skip: (page -1 )* limit,
                     take: limit,
                 })
             ]);
