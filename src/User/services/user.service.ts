@@ -260,11 +260,18 @@ export class UserServices {
                 message:"user not found!"
             }
 
-            const reservations = await this.reservationServices.reservationsByUser(user.id, statusType, limit, page);
+            const { total, reservations, lastPage } = await this.reservationServices
+                .reservationsByUser(user.id, statusType, limit, page);
+
             return {
                 error: false,
                 code: 200,
-                reservations
+                reservations,
+                meta: {
+                    total,
+                    page,
+                    lastPage
+                }
             }
 
         } catch (error) {

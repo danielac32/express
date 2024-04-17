@@ -26,9 +26,10 @@ export class ReservationController {
         filter.state = state as StatusReserveTypes;
 
         try {
-            const reservations = await this.reservationServices.getReservations(filter);
+            const resp = await this.reservationServices.getReservations(filter, +page, +limit);
             res.status(200).json({
-                reservations
+                reservations: resp?.reservations,
+                meta: resp?.meta
             });
         } catch (error) {
             res.status(500)

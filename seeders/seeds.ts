@@ -30,9 +30,73 @@ async function main() {
         { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
         { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
         { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
-        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' }
-
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
+        { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
+        { descripcion: 'Descripción adicional 3', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 4', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 5', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 6', requerimiento: 'Requerimiento adicional 3' },
+        { descripcion: 'Descripción adicional 7', requerimiento: 'Requerimiento adicional 3' },
     ];
+    let count=0;
+
 
     for (const valor of valoresAdicionales) {
         await prisma.reservation.create({
@@ -47,6 +111,7 @@ async function main() {
                 salonId: 1 // ID del salón asociado
             }
         });
+        count = count +1
     }
 
 }
