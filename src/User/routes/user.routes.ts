@@ -16,11 +16,11 @@ router.get('/users', /*[validateJwt] ,*/userController.allUsers);
 router.get('/users/:email', [validateJwt],userController.userByEmail);
 router.patch('/users/:email', [validateJwt,updateUserMiddleware],userController.updateUserByEmail);
 router.delete('/users/:email', [validateJwt],userController.deleteUserByEmail);
-
+router.patch('/resetPassword/:email',[validateJwt],userController.resetPassword);
 router.patch('/userRol/:email',[validateJwt],userController.updateUserRol);
 router.patch('/userActive/:email',[validateJwt],userController.updateUserIsActive);
 // RESERVATIONS USERS
-router.get('/users/:term/reservations/', /*[validateJwt] ,*/ userController.reservationsByUser);
+router.get('/users/:term/reservations/', [validateJwt] , userController.reservationsByUser);
 //LOGIN
 router.post('/auth/login', [loginUserMiddleware],userController.login);
 

@@ -73,6 +73,20 @@ export class UserController {
             return res.status(500).json({ msg: 'Internal server error' });
         }
     };
+    public resetPassword = async(req: Request, res: Response) => {
+    try {
+            const { email } = req.params;
+
+            const data = await this.userServices.resetPassword(email);
+            if(data.error) return res.status(data.code).json(data.message);
+            return res.status(data.code).json({
+                status:data.code
+            });
+        } catch (error) {
+            return res.status(500).json({ msg: 'Internal server error' });
+        }
+    }
+
     public updateUserRol = async(req: Request, res: Response) => {
     try {
             const {rol} = req.body;
@@ -106,7 +120,6 @@ export class UserController {
 
             const resp = await this.userServices.getReservationsByUser(term as string, state as string, Number(limit), Number(page));
             if(resp.error) return res.status(resp.code).json(resp.message);
-
             return res.status(resp.code).json({ reservations: resp.reservations, meta: resp.meta });
         } catch (error) {
             console.log(error)

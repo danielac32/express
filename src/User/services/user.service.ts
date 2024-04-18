@@ -104,6 +104,36 @@ export class UserServices {
             user
         }
     }
+
+    public resetPassword = async(email: string) => {
+        try{
+            const {user} = await this.getUser(email);
+      
+            if(!user) return {
+                error:true,
+                code:404,
+                message:"user not found"
+            }
+
+            const updatedUser = await prisma.userEntity.update({
+                where: {
+                    id: user.id
+                },
+                data:{
+                    password:encrypt("Ont123456"),
+                }
+            });
+            return {
+                error:false,
+                code:200,
+                updatedUser
+            }
+        }catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     public updateRol = async(email: string, rol: string) => {
         try{
             const {user} = await this.getUser(email);
