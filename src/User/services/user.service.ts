@@ -277,6 +277,29 @@ export class UserServices {
             throw error;
         }
     }
+
+
+    public getReservationsByUserDate = async(id: string,dateStart:string,dateEnd:string) =>{
+            try {
+                const {user} = await this.getUser(id);
+                if(!user) return {
+                    error:true,
+                    code:404,
+                    message:"user not found! getReservationsByUserDate"
+                }
+                const res = await this.reservationServices.ReservationsByUserDate(user.id,dateStart,dateEnd);
+           
+                return {
+                    error: false,
+                    code: 200,
+                    res
+                }
+            } catch (error) {
+            throw error;
+        }
+    }
+
+
     public getReservationsByUser = async(term: string, state?:string, limit?: number, page?: number) => {
     
         let statusType: StatusReserveTypes;

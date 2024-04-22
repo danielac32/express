@@ -41,7 +41,7 @@ model Reservation {
   userId     Int
   salon      Salon        @relation(fields: [salonId], references: [id])
   salonId    Int
-  createdAt  DateTime @default(now())
+  createdAt  DateTime 
 }
 
 model Salon {

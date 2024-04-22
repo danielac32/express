@@ -6,6 +6,7 @@ export class ReservationServices {
     public createReservation = async(reserveData: Reserve) => {
         const startDate=new Date(reserveData.startDate);
         const endDate=new Date(reserveData.endDate);
+        const current=new Date();
 
         startDate.setHours(startDate.getHours() - 4);
         endDate.setHours(endDate.getHours() - 4);
@@ -20,16 +21,21 @@ export class ReservationServices {
                     descripcion:reserveData.descripcion,
                     state: StatusReserve.PENDING,
                     userId: reserveData.userId,
-                    salonId: reserveData.salonId
+                    salonId: reserveData.salonId,
+                    createdAt: current
                 }
             });
             return newReservation;
         } catch (error) {
-            console.log(error);
+            console.log(error,current);
             throw error
         }
     };
 
+
+    getDate(dateTime: Date): string {
+      return dateTime.toISOString().split('T')[0]; // Obtenemos solo la parte de la fecha
+    }
     public getReservations = async(filter?: FilterQueryReservation, page = 1, limit = 10) => {
         try {
             const [total, reservations] = await Promise.all([
@@ -118,6 +124,30 @@ export class ReservationServices {
             throw error;
         }
     }
+
+    public ReservationsByUserDate = async(userId:number,startDate:string,endDate:string) =>{
+            try {
+                console.log("reservation by date: ",startDate,endDate)
+                const reservations = await prisma.reservation.findMany({
+                      where: {
+                                  userId: userId,
+                                  createdAt: 
+                                  { 
+                                      gte: new Date(startDate).toISOString(), 
+                                      lte: new Date(endDate).toISOString() 
+                                  } 
+                      },
+                      include: {
+                        user: true,
+                        salon: true
+                      }
+                });
+                return reservations;
+            } catch (error) {
+            throw error;
+        }
+    }
+
     public reservationsByUser = async(userId: number, status?: StatusReserveTypes, limit: number = 10, page: number = 1) => {
         try {
             // const reservations = await prisma.reservation.findMany({

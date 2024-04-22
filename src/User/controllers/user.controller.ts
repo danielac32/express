@@ -5,6 +5,19 @@ export class UserController {
         private userServices: UserServices
     ) {}
 
+
+    public reservationsByUserDate = async(req: Request, res: Response) => {
+            try{
+                const { userId, startDate, endDate } = req.params;
+                const data = await this.userServices.getReservationsByUserDate(userId, startDate, endDate);  
+                if(data.error) return res.status(data.code).json(data.message);
+
+                res.status(data.code).json(data);
+            }catch (error) {
+                console.log(error);
+                return res.status(500).json({ msg: 'Internal server error' });
+            }
+    } 
     public storeUser = async(req: Request, res: Response) => {
         try {
             const body = req.body;

@@ -15,6 +15,9 @@ router.post('/users',[
 router.get('/users', /*[validateJwt] ,*/userController.allUsers);
 router.get('/users/:email', [validateJwt],userController.userByEmail);
 router.patch('/users/:email', [validateJwt,updateUserMiddleware],userController.updateUserByEmail);
+
+router.get('/users/reservations/:userId/:startDate/:endDate',/*[validateJwt] ,*/userController.reservationsByUserDate);
+
 router.delete('/users/:email', [validateJwt],userController.deleteUserByEmail);
 router.patch('/resetPassword/:email',[validateJwt],userController.resetPassword);
 router.patch('/userRol/:email',[validateJwt],userController.updateUserRol);

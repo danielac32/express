@@ -1,17 +1,30 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+const salt = bcrypt.genSaltSync(10);
+
+const encrypt = (text: string): string => {
+    return bcrypt.hashSync(text, salt) 
+};
+
+const decrypt = (text: string, hash: string): boolean => {
+    return bcrypt.compareSync(text, hash);
+};
+
 
 const prisma = new PrismaClient();
 
 async function main() {
-  /*await prisma.userEntity.create({
+  await prisma.userEntity.create({
     data:
       {
-        name: 'Usuario 1',
-        email: 'usuario1@example.com',
-        password: 'password1',
+        name: 'daniel quintero',
+        email: 'danielquinteroac32@gmail.com',
+        password: encrypt('123456'),
+        rol:'ADMIN',
         direction: {
           create: {
-            address: 'Dirección 1'
+            address: 'DGTIC'
           }
         }
       }
@@ -19,10 +32,10 @@ async function main() {
 
   await prisma.salon.create({
     data:
-      { name: 'Salón 1' }
+      { name: 'Simon bolivar' }
   });
-*/
 
+ /*
     const valoresAdicionales = [
         { descripcion: 'Descripción adicional 1', requerimiento: 'Requerimiento adicional 1' },
         { descripcion: 'Descripción adicional 2', requerimiento: 'Requerimiento adicional 2' },
@@ -113,7 +126,7 @@ async function main() {
         });
         count = count +1
     }
-
+*/
 }
 
 main()
