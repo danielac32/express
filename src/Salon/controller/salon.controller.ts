@@ -5,6 +5,20 @@ export class SalonController {
     constructor(
         private salonService: SalonService
     ) {}
+    
+
+    public reservationsBySalon = async(req: Request, res: Response) => {
+            try{
+                const { salonId, startDate, endDate } = req.params;
+                const data = await this.salonService.getReservationsBySalonDate(Number(salonId), startDate, endDate);  
+                if(data.error) return res.status(data.code).json(data.message);
+
+                res.status(data.code).json(data);
+            }catch (error) {
+                console.log(error);
+                return res.status(500).json({ msg: 'Internal server error' });
+            }
+    } 
 
     public create = async(req: Request, res: Response) => {
         try {

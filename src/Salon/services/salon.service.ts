@@ -8,6 +8,28 @@ export class SalonService {
         private reservationServices: ReservationServices
     ) {}
 
+
+
+    public getReservationsBySalonDate = async(id: number,dateStart:string,dateEnd:string) =>{
+            try {
+                const salon = await this.getSalon(id);
+                if(!salon)return {
+                    error:true,
+                    code:404,
+                    message:"salon not found! getReservationsBySalonDate"
+                }
+
+                const res = await this.reservationServices.reservationsBySalonDate(salon.id,dateStart,dateEnd);
+                return {
+                    error: false,
+                    code: 200,
+                    res
+                }
+            } catch (error) {
+            throw error;
+        }
+    }
+
     public createSalon = async(data: Salon) => {
         try {
             const newSalon = await prisma.salon.create({

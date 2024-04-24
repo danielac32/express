@@ -12,5 +12,6 @@ router.delete('/:id',[validateJwt], salonController.delete);
 
 // Reservations
 router.get('/:id/reservations',[validateJwt], salonController.getReservationsBySalon);
+router.get('/reservations/:salonId/:startDate/:endDate',[validateJwt] ,salonController.reservationsBySalon);
 
 export default router;

@@ -124,6 +124,33 @@ export class ReservationServices {
             throw error;
         }
     }
+    
+    public reservationsBySalonDate = async(salonId:number,startDate:string,endDate:string) =>{
+            try {
+                console.log("reservation by date: ",startDate,endDate)
+                const reservations = await prisma.reservation.findMany({
+                      where: {
+                              salonId: salonId,
+                              createdAt: 
+                              { 
+                                  gte: new Date(startDate).toISOString(), 
+                                  lte: new Date(endDate).toISOString() 
+                              } 
+                      },
+                      include: {
+                            user: {
+                                include: {
+                                        direction: true
+                                }
+                            },
+                            salon: true
+                      }
+                });
+                return reservations;
+            } catch (error) {
+            throw error;
+        }
+    }
 
     public ReservationsByUserDate = async(userId:number,startDate:string,endDate:string) =>{
             try {

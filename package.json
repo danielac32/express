@@ -9,8 +9,8 @@
     "build": "tsc",
     "start": "node build/index.js",
     "seed": "ts-node seeders/seeds.ts",
-    "directionUpload": "node src/directionUpload.mjs",
-    "salonUpload": "node src/salonUpload.mjs"
+    "directionUpload": "node scripts/directionUpload.mjs",
+    "salonUpload": "node scripts/salonUpload.mjs"
   },
   "keywords": [],
   "author": "",
