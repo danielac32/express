@@ -138,7 +138,9 @@ export class ReservationServices {
                                   } 
                       },
                       include: {
-                        user: true,
+                        user: {
+                            direction: true
+                        },
                         salon: true
                       }
                 });
