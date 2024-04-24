@@ -130,18 +130,20 @@ export class ReservationServices {
                 console.log("reservation by date: ",startDate,endDate)
                 const reservations = await prisma.reservation.findMany({
                       where: {
-                                  userId: userId,
-                                  createdAt: 
-                                  { 
-                                      gte: new Date(startDate).toISOString(), 
-                                      lte: new Date(endDate).toISOString() 
-                                  } 
+                              userId: userId,
+                              createdAt: 
+                              { 
+                                  gte: new Date(startDate).toISOString(), 
+                                  lte: new Date(endDate).toISOString() 
+                              } 
                       },
                       include: {
-                        user: {
-                            direction: true
-                        },
-                        salon: true
+                            user: {
+                                include: {
+                                        direction: true
+                                }
+                            },
+                            salon: true
                       }
                 });
                 return reservations;
